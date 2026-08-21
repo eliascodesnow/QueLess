@@ -4,9 +4,9 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 
-const authRoutes = require('./routes/authRoutes');
-const queueRoutes = require('./routes/queueRoutes');
-const publicRoutes = require('./routes/publicRoutes');
+const authRoutes = require('./authRoutes');
+const queueRoutes = require('./queueRoutes');
+const publicRoutes = require('./publicRoutes');
 
 function createApp() {
   const app = express();
