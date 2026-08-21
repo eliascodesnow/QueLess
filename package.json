@@ -2,15 +2,16 @@
   "name": "foleni-backend",
   "version": "1.0.0",
   "description": "Foleni - digital queue management system (backend API)",
-  "main": "src/server.js",
+  "main": "server.js",
   "type": "commonjs",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
+    "dev": "nodemon server.js",
+    "start": "node server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:migrate:dev": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "build": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",
