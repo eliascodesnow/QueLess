@@ -1,0 +1,87 @@
+// Foleni database schema
+// Multi-tenant: each Business owns its own Queues and QueueEntries.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum QueueStatus {
+  OPEN
+  PAUSED
+  CLOSED
+}
+
+enum EntryStatus {
+  WAITING
+  SERVING
+  SERVED
+  NO_SHOW
+  LEFT
+}
+
+model Business {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  phone        String?
+  smsEnabled   Boolean  @default(false) // opt-in, off by default (SMS costs money in prod)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  queues Queue[]
+}
+
+model Queue {
+  id                String      @id @default(uuid())
+  businessId        String
+  business          Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name              String
+  description       String?
+  status            QueueStatus @default(OPEN)
+  avgServiceTimeMins Int        @default(10)
+  joinCode          String      @unique // short code used in the public join link / QR
+  chatEnabled       Boolean     @default(true) // per-queue community board toggle
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  entries      QueueEntry[]
+  chatMessages ChatMessage[]
+
+  @@index([businessId])
+}
+
+model QueueEntry {
+  id           String      @id @default(uuid())
+  queueId      String
+  queue        Queue       @relation(fields: [queueId], references: [id], onDelete: Cascade)
+  customerName String
+  phone        String?
+  position     Int
+  status       EntryStatus @default(WAITING)
+  joinedAt     DateTime    @default(now())
+  calledAt     DateTime?
+  servedAt     DateTime?
+  sessionToken String      @unique // lets the anonymous customer poll/reconnect to their own entry
+
+  @@index([queueId, status])
+}
+
+// Lightweight, queue-scoped "community board" — people waiting in the SAME
+// queue can post a short message/status so others nearby can spot them and
+// chat in person if they want to. Not a general chat app on purpose.
+model ChatMessage {
+  id           String   @id @default(uuid())
+  queueId      String
+  queue        Queue    @relation(fields: [queueId], references: [id], onDelete: Cascade)
+  displayName  String
+  message      String
+  createdAt    DateTime @default(now())
+
+  @@index([queueId, createdAt])
+}
