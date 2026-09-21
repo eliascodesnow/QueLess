@@ -59,6 +59,7 @@ the generated join link in another tab/phone to test the customer flow.
    `NODE_ENV=production`.
 5. Set the start command to `npm run prisma:migrate && npm start` so
    migrations run on every deploy.
+   --> NO RAILWAY / RENDER ANYMORE
 
 **Frontend → Vercel**
 1. New Project → import the repo → set root directory to `frontend`.
