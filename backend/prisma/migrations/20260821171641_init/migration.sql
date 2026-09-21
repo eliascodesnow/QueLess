@@ -15,13 +15,7 @@ CREATE TABLE "Business" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Business_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Queue" (
-    "id" TEXT NOT NULL,
-    "businessId" TEXT NOT NULL,
+    CONSTRAINT "Business_pkey" PRIMARY
     "name" TEXT NOT NULL,
     "description" TEXT,
     "status" "QueueStatus" NOT NULL DEFAULT 'OPEN',
