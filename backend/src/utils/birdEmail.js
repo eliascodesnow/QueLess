@@ -2,12 +2,30 @@ const { BirdClient } = require('@messagebird/sdk');
 
 let birdClient = null;
 
+function getBirdApiKey() {
+  const candidates = [
+    process.env.BIRD_API_KEY,
+    process.env.MESSAGEBIRD_API_KEY,
+    process.env.BIRD_EMAIL_API_KEY,
+  ];
+
+  for (const value of candidates) {
+    if (!value) continue;
+    const cleaned = String(value).trim();
+    if (cleaned) return cleaned;
+  }
+
+  return '';
+}
+
 function getBirdClient() {
   if (birdClient) return birdClient;
 
-  const apiKey = process.env.BIRD_API_KEY;
+  const apiKey = getBirdApiKey();
   if (!apiKey) {
-    throw new Error('BIRD_API_KEY is not configured.');
+    throw new Error(
+      'Bird API key is not configured. Set BIRD_API_KEY (or MESSAGEBIRD_API_KEY) in your backend environment before sending emails.'
+    );
   }
 
   birdClient = new BirdClient({ apiKey });
@@ -36,7 +54,15 @@ async function sendBirdEmail({
     payload.text = text;
   }
 
-  return client.email.send(payload);
+  try {
+    return await client.email.send(payload);
+  } catch (error) {
+    const detail = error?.response?.data || error?.message || error;
+    console.error('[bird-email] send failed:', detail);
+    throw new Error(
+      'Bird email send failed. Check the API key, sender address, and Vercel/hosting environment variables.'
+    );
+  }
 }
 
-module.exports = { getBirdClient, sendBirdEmail };
+module.exports = { getBirdApiKey, getBirdClient, sendBirdEmail };
