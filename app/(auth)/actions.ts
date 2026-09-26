@@ -13,11 +13,15 @@ export async function registerAction(_prevState: { error?: string }, formData: F
     return { error: 'Please fill in every field. Password needs at least 8 characters.' };
   }
 
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
   const supabase = createClient();
 
   const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      emailRedirectTo: `${siteUrl}/auth/callback`,
+    },
   });
   if (signUpError || !signUpData.user) {
     return { error: signUpError?.message ?? 'Could not create your account.' };
