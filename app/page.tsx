@@ -7,6 +7,9 @@ export default function Landing() {
       <header className="flex items-center justify-between px-6 py-6 md:px-12 md:py-8 max-w-6xl mx-auto">
         <span className="font-display text-2xl tracking-tightish">Foleni</span>
         <nav className="flex items-center gap-3">
+          <Link href="/join">
+            <Button variant="ghost" size="sm">Join a queue</Button>
+          </Link>
           <Link href="/login">
             <Button variant="ghost" size="sm">Log in</Button>
           </Link>
@@ -29,11 +32,11 @@ export default function Landing() {
           their wait, and when to actually walk in.
         </p>
         <div className="mt-9 flex flex-col sm:flex-row gap-3 max-w-xs sm:max-w-none">
-          <Link href="/register">
-            <Button size="lg" className="w-full sm:w-auto">Create your first queue</Button>
+          <Link href="/join">
+            <Button size="lg" className="w-full sm:w-auto">Join a queue</Button>
           </Link>
-          <Link href="#how">
-            <Button size="lg" variant="secondary" className="w-full sm:w-auto">See how it works</Button>
+          <Link href="/register">
+            <Button size="lg" variant="secondary" className="w-full sm:w-auto">Create your first queue</Button>
           </Link>
         </div>
       </section>
