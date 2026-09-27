@@ -15,10 +15,12 @@ export function QueueLiveView({
   queue,
   initialEntries,
   joinUrl,
+  qrDataUrl,
 }: {
   queue: Queue;
   initialEntries: Entry[];
   joinUrl: string;
+  qrDataUrl: string;
 }) {
   const [entries, setEntries] = useState<Entry[]>(initialEntries);
   const [status, setStatus] = useState(queue.status);
@@ -129,14 +131,18 @@ export function QueueLiveView({
         <h2 className="font-display text-xl mb-1">Share this queue</h2>
         <p className="text-xs text-ink/45 break-all mb-4">{joinUrl}</p>
         <div className="bg-white border border-line rounded p-3 flex justify-center">
-          <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(joinUrl)}`}
-            alt="QR code to join this queue"
-            width={200}
-            height={200}
-          />
+          <img src={qrDataUrl} alt="QR code to join this queue" width={200} height={200} />
         </div>
-        <p className="text-xs text-ink/40 text-center mt-3">Print this at your counter</p>
+        <div className="mt-3 flex justify-center">
+          <a
+            href={qrDataUrl}
+            download={`foleni-queue-${queue.join_code}.png`}
+            className="text-xs font-medium text-brand hover:text-brand/80"
+          >
+            Download QR
+          </a>
+        </div>
+        <p className="text-xs text-ink/40 text-center mt-2">Print this at your counter or entrance</p>
       </Card>
     </div>
   );

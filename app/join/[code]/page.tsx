@@ -2,13 +2,14 @@ import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import { JoinForm } from './join-form';
 
-export default async function JoinPage({ params }: { params: { code: string } }) {
+export default async function JoinPage({ params }: { params: Promise<{ code: string }> }) {
+  const { code } = await params;
   const supabase = await createClient();
 
   const { data: queue } = await supabase
     .from('queues')
     .select('*, businesses(name)')
-    .eq('join_code', params.code)
+    .eq('join_code', code)
     .single();
 
   if (!queue) notFound();
@@ -37,7 +38,7 @@ export default async function JoinPage({ params }: { params: { code: string } })
         </div>
 
         {queue.status === 'open' ? (
-          <JoinForm joinCode={params.code} />
+          <JoinForm joinCode={code} />
         ) : (
           <p className="text-terracotta-dark text-sm text-center">
             This queue isn&apos;t accepting new customers right now.

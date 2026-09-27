@@ -5,14 +5,15 @@ import { StatusLiveView } from './live-view';
 export default async function StatusPage({
   params,
 }: {
-  params: { code: string; session: string };
+  params: Promise<{ code: string; session: string }>;
 }) {
+  const { session } = await params;
   const supabase = await createClient();
 
   const { data: entry } = await supabase
     .from('queue_entries')
     .select('*, queues(*)')
-    .eq('session_token', params.session)
+    .eq('session_token', session)
     .single();
 
   if (!entry) notFound();
