@@ -9,6 +9,19 @@ import { useEffect, useState } from 'react';
 const GOOGLE_CLIENT_ID =
   process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '416075406352-v72j21lefuf2mo9iqvtluhc3658il685.apps.googleusercontent.com';
 
+function generateNonce() {
+  const array = new Uint8Array(16);
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    crypto.getRandomValues(array);
+  } else {
+    for (let i = 0; i < array.length; i += 1) {
+      array[i] = Math.floor(Math.random() * 256);
+    }
+  }
+
+  return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
 export function GoogleAuthButton({ label = 'Continue with Gmail' }: { label?: string }) {
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
@@ -23,8 +36,11 @@ export function GoogleAuthButton({ label = 'Continue with Gmail' }: { label?: st
     const google = (window as any).google;
     if (!google?.accounts?.id) return;
 
+    const nonce = generateNonce();
+
     google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
+      nonce,
       callback: async ({ credential }: { credential?: string }) => {
         if (!credential) {
           setError('Google sign-in failed. Please try again.');
@@ -35,6 +51,7 @@ export function GoogleAuthButton({ label = 'Continue with Gmail' }: { label?: st
         const { error } = await supabase.auth.signInWithIdToken({
           provider: 'google',
           token: credential,
+          nonce,
         });
 
         if (error) {
