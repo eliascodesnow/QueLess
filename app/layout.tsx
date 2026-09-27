@@ -28,6 +28,16 @@ export const metadata: Metadata = {
   title: 'Foleni — join the line without standing in it',
   description:
     'Foleni is queue management built for the counter, not the boardroom. Create a line, share a code, and let people show up when it is actually their turn.',
+  icons: {
+    icon: [
+      { url: '/favicon-32x32.svg', sizes: '32x32', type: 'image/svg+xml' },
+      { url: '/favicon-192x192.svg', sizes: '192x192', type: 'image/svg+xml' },
+      { url: '/favicon-512x512.svg', sizes: '512x512', type: 'image/svg+xml' },
+      { url: '/icon.svg' },
+    ],
+    shortcut: '/icon.svg',
+    apple: [{ url: '/apple-touch-icon.svg', sizes: '180x180', type: 'image/svg+xml' }],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
