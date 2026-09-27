@@ -1,9 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { completeOnboardingAction } from '../(auth)/actions';
-import { Button } from '@/components/ui/button';
-import { Input, Label } from '@/components/ui/input';
+import { OnboardingForm } from '@/components/onboarding-form';
 import { createClient } from '@/lib/supabase/server';
 
 export default async function OnboardingPage() {
@@ -33,16 +31,7 @@ export default async function OnboardingPage() {
           Add the name your customers will recognize.
         </p>
 
-        <form action={completeOnboardingAction} className="space-y-5">
-          <div>
-            <Label>Business name</Label>
-            <Input name="name" placeholder="e.g. Clinic or Barbershop" required />
-          </div>
-
-          <Button type="submit" size="lg" className="w-full">
-            Set up your business
-          </Button>
-        </form>
+        <OnboardingForm />
       </div>
     </main>
   );
