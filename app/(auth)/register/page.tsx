@@ -1,10 +1,11 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
 import { registerAction } from "../actions";
 import { Input, Label } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { GoogleAuthButton } from "@/components/google-auth-button";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -34,6 +35,19 @@ export default function RegisterPage() {
           A barbershop, a clinic, a repair shop, whatever it is, this is where
           your queues will live.
         </p>
+
+        <GoogleAuthButton label="Continue with Gmail" />
+
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-ink/10" />
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-paper px-3 text-[0.7rem] uppercase tracking-[0.2em] text-ink/50">
+              or
+            </span>
+          </div>
+        </div>
 
         <form action={formAction} className="space-y-5">
           <div>

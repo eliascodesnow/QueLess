@@ -6,24 +6,30 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 async function getBusinessId() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
+    error: userError,
   } = await supabase.auth.getUser();
-  if (!user) throw new Error('Not authenticated');
+  if (userError || !user) return null;
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('business_members')
     .select('business_id')
     .eq('user_id', user.id)
-    .single();
-  if (!data) throw new Error('No business found for this account');
+    .maybeSingle();
+
+  if (error || !data) return null;
   return data.business_id;
 }
 
 export async function createQueueAction(_prevState: { error?: string }, formData: FormData) {
-  const supabase = createClient();
   const businessId = await getBusinessId();
+  if (!businessId) {
+    return { error: 'Your account is not connected to a business yet. Please finish setup first.' };
+  }
+
+  const supabase = await createClient();
 
   const name = String(formData.get('name') ?? '').trim();
   const description = String(formData.get('description') ?? '').trim() || null;
@@ -55,13 +61,13 @@ export async function createQueueAction(_prevState: { error?: string }, formData
 }
 
 export async function updateQueueStatusAction(queueId: string, status: 'open' | 'paused' | 'closed') {
-  const supabase = createClient();
+  const supabase = await createClient();
   await supabase.from('queues').update({ status }).eq('id', queueId);
   revalidatePath(`/dashboard/queues/${queueId}`);
 }
 
 export async function callNextAction(queueId: string, counterNumber?: number) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: currentlyServing } = await supabase
     .from('queue_entries')
@@ -104,7 +110,7 @@ export async function markEntryAction(
   entryId: string,
   status: 'served' | 'no_show' | 'left'
 ) {
-  const supabase = createClient();
+  const supabase = await createClient();
   await supabase
     .from('queue_entries')
     .update({

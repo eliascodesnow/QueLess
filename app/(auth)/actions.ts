@@ -14,7 +14,7 @@ export async function registerAction(_prevState: { error?: string }, formData: F
   }
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
     email,
@@ -55,7 +55,7 @@ export async function loginAction(_prevState: { error?: string }, formData: Form
   const email = String(formData.get('email') ?? '').trim();
   const password = String(formData.get('password') ?? '');
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
@@ -66,7 +66,7 @@ export async function loginAction(_prevState: { error?: string }, formData: Form
 }
 
 export async function logoutAction() {
-  const supabase = createClient();
+  const supabase = await createClient();
   await supabase.auth.signOut();
   redirect('/login');
 }

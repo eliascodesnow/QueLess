@@ -3,8 +3,8 @@ import { cookies } from 'next/headers';
 
 // Not parameterized with the Database type here on purpose: see the note
 // in lib/supabase/client.ts. Regenerate real types once deployed.
-export function createClient() {
-  const cookieStore = cookies();
+export async function createClient() {
+  const cookieStore = await cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

@@ -5,7 +5,7 @@ import { logoutAction } from '../(auth)/actions';
 import { Button } from '@/components/ui/button';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -15,7 +15,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .from('business_members')
     .select('business_id, businesses(name)')
     .eq('user_id', user.id)
-    .single();
+    .maybeSingle();
+
+  if (!membership) redirect('/register');
 
   return (
     <div className="min-h-screen">

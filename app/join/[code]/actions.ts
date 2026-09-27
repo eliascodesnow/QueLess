@@ -8,7 +8,7 @@ export async function joinQueueAction(
   _prevState: { error?: string },
   formData: FormData
 ) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const customerName = String(formData.get('customerName') ?? '').trim();
   const phone = String(formData.get('phone') ?? '').trim() || null;

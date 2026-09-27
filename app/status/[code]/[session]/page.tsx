@@ -7,7 +7,7 @@ export default async function StatusPage({
 }: {
   params: { code: string; session: string };
 }) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: entry } = await supabase
     .from('queue_entries')

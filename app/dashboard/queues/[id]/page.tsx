@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { QueueLiveView } from './live-view';
 
 export default async function QueueDetailPage({ params }: { params: { id: string } }) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: queue } = await supabase.from('queues').select('*').eq('id', params.id).single();
   if (!queue) notFound();

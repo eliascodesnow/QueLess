@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { JoinForm } from './join-form';
 
 export default async function JoinPage({ params }: { params: { code: string } }) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: queue } = await supabase
     .from('queues')

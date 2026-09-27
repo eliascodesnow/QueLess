@@ -4,7 +4,7 @@ import { CreateQueueForm } from './create-queue-form';
 import { StatusPill } from '@/components/ui/card';
 
 export default async function DashboardPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
