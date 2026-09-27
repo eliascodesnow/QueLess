@@ -28,15 +28,18 @@ export const metadata: Metadata = {
   title: 'Foleni — join the line without standing in it',
   description:
     'Foleni is queue management built for the counter, not the boardroom. Create a line, share a code, and let people show up when it is actually their turn.',
+  manifest: '/site.webmanifest',
   icons: {
     icon: [
-      { url: '/favicon-32x32.svg', sizes: '32x32', type: 'image/svg+xml' },
-      { url: '/favicon-192x192.svg', sizes: '192x192', type: 'image/svg+xml' },
-      { url: '/favicon-512x512.svg', sizes: '512x512', type: 'image/svg+xml' },
-      { url: '/icon.svg' },
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon.png' },
     ],
-    shortcut: '/icon.svg',
-    apple: [{ url: '/apple-touch-icon.svg', sizes: '180x180', type: 'image/svg+xml' }],
+    shortcut: '/favicon.png',
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
 };
 
