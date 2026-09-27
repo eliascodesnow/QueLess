@@ -17,7 +17,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .eq('user_id', user.id)
     .maybeSingle();
 
-  if (!membership) redirect('/register');
+  if (!membership) redirect('/onboarding');
 
   return (
     <div className="min-h-screen">
